@@ -67,6 +67,8 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+
+
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -79,10 +81,12 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
     "users",
+    "kazan_express"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -135,6 +139,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    # 'kazan_express.middleware.AvailableMiddleware'
 ]
 
 # STATIC
@@ -314,6 +319,18 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_THROTTLE_CLASSES': [
+        'kazan_express.throttling.BlockThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '4/hours',
+    },
+}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/home/fireplay/myfiles/projects/python/fornow/kazan_express_new',
+    }
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
